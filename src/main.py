@@ -10,7 +10,8 @@
 #
 # 선형 비례 관계로 계산하세요.
 def servo_angle_to_pulse_width(angle):
-    raise NotImplementedError
+    result = 500 + (angle / 90) * 1000
+    return int(result)
 
 
 # 문제 2.
@@ -19,7 +20,25 @@ def servo_angle_to_pulse_width(angle):
 #
 # C4, D4, E4, F4, G4, A4, B4, C5 음계를 지원해야 합니다.
 def note_to_frequency(note):
-    raise NotImplementedError
+    match note:
+        case "C4":
+            return 262
+        case "D4":
+            return 294
+        case "E4":
+            return 330
+        case "F4":
+            return 349
+        case "G4":
+            return 392
+        case "A4":
+            return 440
+        case "B4":
+            return 494
+        case "C5":
+            return 523
+        case _:
+            return 0
 
 
 # 문제 3.
@@ -29,7 +48,7 @@ def note_to_frequency(note):
 # notes 인자는 음계 이름이 들어있는 리스트입니다.
 # 각 음계를 주파수 값으로 변환한 리스트를 반환하세요.
 def melody_to_frequencies(notes):
-    raise NotImplementedError
+    return [note_to_frequency(note) for note in notes]
 
 
 # 문제 4.
@@ -48,7 +67,19 @@ def melody_to_frequencies(notes):
 #
 # 반환값은 (linear_x, angular_z) 튜플입니다.
 def direction_to_twist(direction):
-    raise NotImplementedError
+    match direction:
+        case "forward":
+            return (1.0, 0.0)
+        case "backward":
+            return (-1.0, 0.0)
+        case "left":
+            return (0.0, 1.0)
+        case "right":
+            return (0.0, -1.0)
+        case "stop":
+            return (0.0, 0.0)
+        case _:
+            return (0.0, 0.0)
 
 
 # 문제 5.
@@ -62,4 +93,9 @@ def direction_to_twist(direction):
 #
 # 반환값은 (left_speed, right_speed) 튜플입니다.
 def twist_to_wheel_speed(linear_x, angular_z):
-    raise NotImplementedError
+    left_speed = linear_x * 100 - angular_z * 100
+    right_speed = linear_x * 100 + angular_z * 100
+    left_speed = round(max(-100, min(100, left_speed)))
+    right_speed = round(max(-100, min(100, right_speed)))
+
+    return (left_speed, right_speed)
